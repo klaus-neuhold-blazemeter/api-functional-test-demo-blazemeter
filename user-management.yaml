@@ -1,0 +1,21 @@
+execution:
+  - scenario: Create and delete user
+scenarios:
+  Create and delete user:
+    requests:
+      - url: 'https://reqres.in/api/users/'
+        method: POST
+        body:
+          name: klaus
+          job: pm
+        extract-jsonpath:
+          user_id: $.id
+        label: Create user
+      - url: 'https://reqres.in/api/users/${user_id_1}'
+        method: DELETE
+        label: Delete user
+        assert:
+          - subject: http-code
+            contains:
+              - ^204$
+            regexp: true
